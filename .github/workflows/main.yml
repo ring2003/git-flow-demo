@@ -9,10 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: /github/workspace
     steps:
     - name: Bazel Action
       uses: ngalaiko/bazel-action@2.0.0
       with:
-        working_dir: /github/workspace
         # Arguments to the bazel command
         args: run
