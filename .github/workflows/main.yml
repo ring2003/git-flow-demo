@@ -10,9 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Bazel Action
+    - uses: actions/checkout@v1
+    - name: Mount bazel cache
+      uses: actions/cache@v1
+      with:
+        path: "/home/runner/.cache/bazel"
+        key: bazel
+    - name: Install bazelisk
+      run: |
+        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.1.0/bazelisk-linux-amd64"
+        mkdir -p "${GITHUB_WORKSPACE}/bin/"
+        mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
+        chmod +x "${GITHUB_WORKSPACE}/bin/bazel"    
+    - name: build
       uses: ngalaiko/bazel-action@2.0.0
       with:
-        working_dir: /github/workspace
         # Arguments to the bazel command
         args: run
